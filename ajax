@@ -1,0 +1,27 @@
+import requests
+
+
+# 构造url格式，{}是需要填的占位符，是影片的起始位置
+url = 'https://movie.douban.com/j/chart/top_list?type=11&interval_id=100%3A90&action=&start={0}&limit=20'
+# 只爬取前580个电影信息，i用于填写其实位置
+for i in range(0, 580, 20):
+    # 生成每条Ajax的url
+    ajax_url = url.format(str(i))
+    # 用get()请求
+    rsp = requests.get(ajax_url)
+    # 得到返回数据,movies是个list,每个元素是dict
+    movies = rsp.json()
+    # 遍历每个电影
+    for movie in movies:
+        name = movie['title']
+        release_date = movie['release_date']
+        regions = movie['regions']
+        regions = ''.join(regions)
+        types = movie['types']
+        types = ','.join(types)
+        actors = movie['actors']
+        actors = ','.join(actors)
+        score = movie['score']
+        # 写入本地文件
+        with open('douban.text', 'a', encoding='utf-8') as f:
+            f.write('名字：'+name+'\n日期'+release_date+'\n地区'+regions+'\n类型'+types+'\n演员'+actors+'\n评分'+score+'\n\n')
