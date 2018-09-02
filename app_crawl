@@ -1,0 +1,55 @@
+# 导入请求库
+import requests
+
+
+# 类型的格式化
+def type_format(hero_type):
+    if hero_type[0] == '1':
+        return '战士'
+    if hero_type[0] == '2':
+        return '法师'
+    if hero_type[0] == '3':
+        return '坦克'
+    if hero_type[0] == '4':
+        return '刺客'
+    if hero_type[0] == '5':
+        return '射手'
+    if hero_type[0] == '6':
+        return '辅助'
+
+
+def rate(rate):
+    return '{0}{1}'.format(rate, '%')
+
+
+# 所需数据的url
+url = 'http://gamehelper.gm825.com/wzry/hero/ranking?channel_id=90009a&app_id=h9044j&game_id=7622&game_name=%E7%8E%8B%E8%80%85%E8%8D%A3%E8%80%80&vcode=13.0.4.0&version_code=13040&cuid=154BE40FAD86F1906AF64ECFB77B7781&ovr=5.1.1&device=Xiaomi_2014813&net_type=1&client_id=lbEmaFJKlM50o%2BaES6taUw%3D%3D&info_ms=&info_ma=FeiTA88o1ij4mk0KlrbC8spJRoB%2F35t38Dfg9cUZPqk%3D&mno=0&info_la=TZo6%2BEi6%2FED1iWhh5Ix7tQ%3D%3D&info_ci=TZo6%2BEi6%2FED1iWhh5Ix7tQ%3D%3D&mcc=0&clientversion=13.0.4.0&bssid=n67IYIRXbcwQBbrl5CiG5bmhG%2FSMFdSypVKXjBNrULU%3D&os_level=22&os_id=8bd64b36c5b20ff5&resolution=720_1280&dpi=320&client_ip=192.168.1.102&pdunid=3d1a68a37d22'
+# 返回的数据是dict格式，用json获取
+data= requests.get(url).json()
+# 找到包含排名的列表,列表的每个元素都是dict类型
+ranking_list = data['ranking_list']
+# 遍历每个英雄排名
+for i in ranking_list:
+    # 设置胜率排名
+    hero_rank = str(ranking_list.index(i)+1)
+    # 获取英雄的id
+    hero_id = i['hero_id']
+    # 获取英雄的名字
+    hero_name = i['name']
+    # 获取英雄的头像
+    hero_icon = i['icon']
+    # 获取英雄的类型
+    hero_type = i['type']
+    # 格式化类型
+    hero_type = type_format(hero_type)
+    # 获取英雄的胜率
+    hero_winrate = i['winrate']
+    # 格式化胜率
+    hero_winrate = rate(hero_winrate)
+    # 获取英雄的出场率
+    hero_appearance_rate = i['appearance_rate']
+    # 格式化出场率
+    hero_appearance_rate = rate(hero_appearance_rate)
+    # 以追加的方式写入文件
+    with open('rank_list.txt', 'a', encoding='utf-8') as f:
+        f.write('排名：'+hero_rank+'    英雄：'+hero_name+'    ID：'+hero_id+'    头像：'+hero_icon+'    类型：'+hero_type+'    胜率：'+hero_winrate+'    出场率：'+hero_appearance_rate+'\n')
