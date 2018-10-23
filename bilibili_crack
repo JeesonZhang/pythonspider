@@ -95,7 +95,7 @@ def Corp(image, position):
     second_line_img = []
     for pos in position:
         if pos['y'] == -58:
-            first_line_img.append(image.crop((abs(pos['x']), 58, abs(pos['x']) + 10, 166)))
+            first_line_img.append(image.crop((abs(pos['x']), 58, abs(pos['x']) + 10, 116)))
         if pos['y'] == 0:
             second_line_img.append(image.crop((abs(pos['x']), 0, abs(pos['x']) + 10, 58)))
     return first_line_img, second_line_img
