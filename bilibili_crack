@@ -19,9 +19,9 @@ def init():
     # 实例化一个chrome浏览器
     browser = webdriver.Chrome()
     # 用户名
-    username = '17863900369'
+    username = '***********'
     # 密码
-    password = '17863900369'
+    password = '***********'
     # 设置等待超时
     wait = WebDriverWait(browser, 20)
 
